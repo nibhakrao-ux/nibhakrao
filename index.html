@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kshithi Photography</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ivory:       #F7F4EF;
+      --slate:       #2C2C2C;
+      --slate-light: #6B6B6B;
+      --sage:        #7A917A;
+      --gold:        #C4A882;
+      --white:       #FFFFFF;
+    }
+
+    body {
+      background: var(--ivory);
+      color: var(--slate);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 48px;
+      background: rgba(247,244,239,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(196,168,130,0.2);
+    }
+    .nav-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem; font-weight: 400; letter-spacing: 0.06em;
+    }
+    .nav-name em { color: var(--sage); font-style: italic; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-link {
+      font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--slate-light); cursor: pointer; background: none; border: none;
+      font-family: 'Inter', sans-serif; font-weight: 300; text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--sage); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 100px 24px 80px; position: relative;
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 300; line-height: 1.05; margin-bottom: 24px;
+    }
+    .hero-title em { font-style: italic; color: var(--sage); }
+    .hero-sub {
+      font-size: 0.88rem; letter-spacing: 0.04em; color: var(--slate-light);
+      max-width: 420px; line-height: 1.8;
+    }
+    .hero-scroll {
+      position: absolute; bottom: 36px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gold);
+    }
+    .hero-line { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--gold), transparent); }
+
+    /* SECTIONS */
+    .section { padding: 80px 48px; max-width: 1200px; margin: 0 auto; }
+    .section-eyebrow {
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300; margin-bottom: 48px;
+    }
+
+    /* GALLERY TABS */
+    .gallery-tabs {
+      display: flex; gap: 0; margin-bottom: 40px;
+      border-bottom: 1px solid rgba(196,168,130,0.25);
+    }
+    .tab {
+      padding: 10px 24px;
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--slate-light); cursor: pointer; background: none; border: none;
+      font-family: 'Inter', sans-serif; font-weight: 300;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: all 0.2s;
+    }
+    .tab:hover { color: var(--slate); }
+    .tab.active { color: var(--sage); border-bottom-color: var(--sage); }
+
+    /* GALLERY GRID */
+    .gallery-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+
+    /* PHOTO CARD */
+    .photo-card {
+      position: relative; overflow: hidden; cursor: pointer;
+      background: #e8e4de; aspect-ratio: 4/3;
+    }
+    .photo-card img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .photo-card:hover img { transform: scale(1.04); }
+    .photo-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(44,44,44,0.82), transparent);
+      padding: 32px 18px 16px;
+      transform: translateY(100%);
+      transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94);
+      color: var(--white);
+    }
+    .photo-card:hover .photo-caption { transform: translateY(0); }
+    .photo-caption-title { font-family: 'Cormorant Garamond', serif; font-size: 1rem; margin-bottom: 3px; }
+    .photo-caption-meta { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.75; }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .about-img { aspect-ratio: 3/4; background: #ddd8d0; overflow: hidden; }
+    .about-img img { width: 100%; height: 100%; object-fit: cover; }
+    .about-text p { font-size: 1.05rem; line-height: 1.85; color: var(--slate-light); margin-bottom: 20px; }
+    .about-text p strong { color: var(--slate); font-weight: 500; }
+    .awards { margin-top: 36px; }
+    .awards-label { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .award-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; font-size: 0.85rem; color: var(--slate-light); line-height: 1.5; }
+    .award-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--sage); margin-top: 7px; flex-shrink: 0; }
+
+    /* CONTACT */
+    .contact-wrap { text-align: center; padding: 80px 24px; border-top: 1px solid rgba(196,168,130,0.2); }
+    .contact-sub { font-size: 0.88rem; color: var(--slate-light); margin-bottom: 36px; line-height: 1.7; }
+    .contact-btn {
+      display: inline-block; padding: 14px 40px;
+      border: 1px solid var(--sage); color: var(--sage);
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+      font-family: 'Inter', sans-serif; font-weight: 400;
+      cursor: pointer; background: none; text-decoration: none;
+      transition: all 0.25s;
+    }
+    .contact-btn:hover { background: var(--sage); color: var(--white); }
+
+    /* FOOTER */
+    .footer { text-align: center; padding: 28px 24px; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold); opacity: 0.7; }
+
+    @media (max-width: 768px) {
+      .nav { padding: 18px 24px; }
+      .section { padding: 60px 24px; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .nav-links { gap: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-name">Kshithi <em>Photography</em></div>
+    <div class="nav-links">
+      <a class="nav-link" href="#work">Work</a>
+      <a class="nav-link" href="#about">About</a>
+      <a class="nav-link" href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">Photography Portfolio</div>
+    <h1 class="hero-title">Seeing the world<br><em>one frame</em> at a time</h1>
+    <p class="hero-sub">A collection of work exploring light, emotion, and the quiet moments in between.</p>
+    <div class="hero-scroll">
+      <div class="hero-line"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="work">
+    <div class="section">
+      <div class="section-eyebrow">Selected Work</div>
+      <h2 class="section-title">Portfolio</h2>
+
+      <div class="gallery-tabs">
+        <button class="tab active" onclick="filterGallery('all', this)">All</button>
+        <button class="tab" onclick="filterGallery('portraits', this)">Portraits</button>
+        <button class="tab" onclick="filterGallery('landscape', this)">Landscape</button>
+        <button class="tab" onclick="filterGallery('architecture', this)">Architecture</button>
+      </div>
+
+      <div class="gallery-grid" id="gallery">
+        <!-- Photos will be injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section">
+      <div class="section-eyebrow">About</div>
+      <h2 class="section-title">The Photographer</h2>
+      <div class="about-grid">
+        <div class="about-img">
+          <img src="https://images.unsplash.com/photo-1502767882000-be02186b0429?w=600&q=80" alt="Photographer" />
+        </div>
+        <div class="about-text">
+          <p><strong>Hi, I'm Kshithi</strong> — a high school photographer based in Denver, Colorado. I've been drawn to photography for as long as I can remember, finding stories in everyday light and overlooked moments.</p>
+          <p>My work spans portraiture, landscape, and architecture, always with an eye toward the emotional weight a single frame can carry. Photography has taught me to slow down, observe, and look twice.</p>
+          <div class="awards">
+            <div class="awards-label">Recognition</div>
+            <div class="award-item"><div class="award-dot"></div><span>Add your award or recognition here</span></div>
+            <div class="award-item"><div class="award-dot"></div><span>Add your award or recognition here</span></div>
+            <div class="award-item"><div class="award-dot"></div><span>Add your award or recognition here</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-wrap">
+      <div class="section-eyebrow">Get in Touch</div>
+      <h2 class="section-title">Let's Connect</h2>
+      <p class="contact-sub">Interested in my work or have a question? I'd love to hear from you.</p>
+      <a class="contact-btn" href="mailto:your@email.com">Send a Message</a>
+    </div>
+  </section>
+
+  <div class="footer">© 2025 Kshithi Photography · All rights reserved</div>
+
+  <script>
+    const photos = [
+      { title: "Golden Hour",    meta: "Landscape · 2024",     cat: "landscape",     src: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=80" },
+      { title: "Still Waters",   meta: "Nature · 2024",        cat: "landscape",     src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" },
+      { title: "Morning Light",  meta: "Portrait · 2023",      cat: "portraits",     src: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80" },
+      { title: "Urban Geometry", meta: "Architecture · 2024",  cat: "architecture",  src: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80" },
+      { title: "Quiet Dusk",     meta: "Landscape · 2023",     cat: "landscape",     src: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=800&q=80" },
+      { title: "The Watcher",    meta: "Portrait · 2024",      cat: "portraits",     src: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80" },
+      { title: "Reverie",        meta: "Portrait · 2024",      cat: "portraits",     src: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80" },
+      { title: "Lines & Light",  meta: "Architecture · 2023",  cat: "architecture",  src: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=800&q=80" },
+    ];
+
+    function renderGallery(filter) {
+      const grid = document.getElementById('gallery');
+      const filtered = filter === 'all' ? photos : photos.filter(p => p.cat === filter);
+      grid.innerHTML = filtered.map(p => `
+        <div class="photo-card">
+          <img src="${p.src}" alt="${p.title}" loading="lazy" />
+          <div class="photo-caption">
+            <div class="photo-caption-title">${p.title}</div>
+            <div class="photo-caption-meta">${p.meta}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterGallery(cat, btn) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      renderGallery(cat);
+    }
+
+    renderGallery('all');
+  </script>
+</body>
+</html>
