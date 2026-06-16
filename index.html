@@ -11,16 +11,16 @@
 
     :root {
       --ice-blue:       #E3F3FF;
-      --slate:       #2C2C2C;
-      --slate-light: #6B6B6B;
-      --sage:        #7A917A;
-      --gold:        #C4A882;
+      --midnight:       #273E4F;
+      --light-blue: #B5DFFF;
+      --denim:        #265981;
+      --soft-blue:        #86B4D7;
       --white:       #FFFFFF;
     }
 
     body {
-      background: var(--ivory);
-      color: var(--slate);
+      background: var(--ice-blue);
+      color: var(--midnight);
       font-family: 'Inter', sans-serif;
       font-weight: 300;
       -webkit-font-smoothing: antialiased;
@@ -39,15 +39,15 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.35rem; font-weight: 400; letter-spacing: 0.06em;
     }
-    .nav-name em { color: var(--sage); font-style: italic; }
+    .nav-name em { color: var(--soft-blue); font-style: italic; }
     .nav-links { display: flex; gap: 32px; }
     .nav-link {
       font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--slate-light); cursor: pointer; background: none; border: none;
+      color: var(--light-blue); cursor: pointer; background: none; border: none;
       font-family: 'Inter', sans-serif; font-weight: 300; text-decoration: none;
       transition: color 0.2s;
     }
-    .nav-link:hover { color: var(--sage); }
+    .nav-link:hover { color: var(--denim); }
 
     /* HERO */
     .hero {
@@ -57,31 +57,31 @@
     }
     .hero-eyebrow {
       font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 20px;
+      color: var(--soft-blue); margin-bottom: 20px;
     }
     .hero-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(3rem, 8vw, 6.5rem);
       font-weight: 300; line-height: 1.05; margin-bottom: 24px;
     }
-    .hero-title em { font-style: italic; color: var(--sage); }
+    .hero-title em { font-style: italic; color: var(--denim); }
     .hero-sub {
-      font-size: 0.88rem; letter-spacing: 0.04em; color: var(--slate-light);
+      font-size: 0.88rem; letter-spacing: 0.04em; color: var(--light-blue);
       max-width: 420px; line-height: 1.8;
     }
     .hero-scroll {
       position: absolute; bottom: 36px;
       display: flex; flex-direction: column; align-items: center; gap: 8px;
       font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
-      color: var(--gold);
+      color: var(--soft-blue);
     }
-    .hero-line { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--gold), transparent); }
+    .hero-line { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--soft-blue), transparent); }
 
     /* SECTIONS */
     .section { padding: 80px 48px; max-width: 1200px; margin: 0 auto; }
     .section-eyebrow {
       font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 12px;
+      color: var(--soft-blue); margin-bottom: 12px;
     }
     .section-title {
       font-family: 'Cormorant Garamond', serif;
@@ -97,13 +97,13 @@
     .tab {
       padding: 10px 24px;
       font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--slate-light); cursor: pointer; background: none; border: none;
+      color: var(--light-blue); cursor: pointer; background: none; border: none;
       font-family: 'Inter', sans-serif; font-weight: 300;
       border-bottom: 2px solid transparent; margin-bottom: -1px;
       transition: all 0.2s;
     }
-    .tab:hover { color: var(--slate); }
-    .tab.active { color: var(--sage); border-bottom-color: var(--sage); }
+    .tab:hover { color: var(--midnight); }
+    .tab.active { color: var(--soft-blue); border-bottom-color: var(--soft-blue); }
 
     /* GALLERY GRID */
     .gallery-grid {
@@ -113,7 +113,7 @@
     /* PHOTO CARD */
     .photo-card {
       position: relative; overflow: hidden; cursor: pointer;
-      background: #e8e4de; aspect-ratio: 4/3;
+      background: #B4C0D7; aspect-ratio: 4/3;
     }
     .photo-card img {
       width: 100%; height: 100%; object-fit: cover; display: block;
@@ -136,28 +136,28 @@
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
     .about-img { aspect-ratio: 3/4; background: #ddd8d0; overflow: hidden; }
     .about-img img { width: 100%; height: 100%; object-fit: cover; }
-    .about-text p { font-size: 1.05rem; line-height: 1.85; color: var(--slate-light); margin-bottom: 20px; }
-    .about-text p strong { color: var(--slate); font-weight: 500; }
+    .about-text p { font-size: 1.05rem; line-height: 1.85; color: var(--light-blue); margin-bottom: 20px; }
+    .about-text p strong { color: var(--midnight); font-weight: 500; }
     .awards { margin-top: 36px; }
-    .awards-label { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
-    .award-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; font-size: 0.85rem; color: var(--slate-light); line-height: 1.5; }
-    .award-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--sage); margin-top: 7px; flex-shrink: 0; }
+    .awards-label { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--denim); margin-bottom: 14px; }
+    .award-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; font-size: 0.85rem; color: var(--light-blue); line-height: 1.5; }
+    .award-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--soft-blue); margin-top: 7px; flex-shrink: 0; }
 
     /* CONTACT */
     .contact-wrap { text-align: center; padding: 80px 24px; border-top: 1px solid rgba(196,168,130,0.2); }
-    .contact-sub { font-size: 0.88rem; color: var(--slate-light); margin-bottom: 36px; line-height: 1.7; }
+    .contact-sub { font-size: 0.88rem; color: var(--light-blue); margin-bottom: 36px; line-height: 1.7; }
     .contact-btn {
       display: inline-block; padding: 14px 40px;
-      border: 1px solid var(--sage); color: var(--sage);
+      border: 1px solid var(--soft-blue); color: var(--soft-blue);
       font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
       font-family: 'Inter', sans-serif; font-weight: 400;
       cursor: pointer; background: none; text-decoration: none;
       transition: all 0.25s;
     }
-    .contact-btn:hover { background: var(--sage); color: var(--white); }
+    .contact-btn:hover { background: var(--soft-blue); color: var(--white); }
 
     /* FOOTER */
-    .footer { text-align: center; padding: 28px 24px; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold); opacity: 0.7; }
+    .footer { text-align: center; padding: 28px 24px; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--denim); opacity: 0.7; }
 
     @media (max-width: 768px) {
       .nav { padding: 18px 24px; }
