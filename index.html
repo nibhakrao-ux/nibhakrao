@@ -317,7 +317,10 @@
   </div>
 
   <script>
-    const photos = [
+    // Existing photos, uploaded before the images/<batch>/manifest.json system
+    // existed. Left in place at their original root-level paths — see
+    // images/README.md for how *new* batches should be added going forward.
+    const legacyPhotos = [
       { title: "Circle of Life",    meta: "Landscape · 2026",     cat: "landscape",     src: "CircleOfLife.jpg" },
       { title: "Sunset at Pond",   meta: "Landscape · 2024",        cat: "landscape",     src: "sunset.jpg" },
       { title: "Butterfly Bookmark",  meta: "Objects · 2025",      cat: "objects",     src: "ButterflyBookmark.JPG" },
@@ -349,6 +352,48 @@
       { title: "Pair of Ducks",        meta: "Objects · 2023",      cat: "objects",     src: "TwinDucks.jpeg" },
       { title: "Garden of the Gods",  meta: "Landscape · 2026",  cat: "landscape",  src: "GardenOfTheGods.JPG" },
     ];
+
+    // `photos` starts as just the legacy set and is extended with anything
+    // found under images/<batch>/manifest.json once loadPhotos() resolves.
+    let photos = [...legacyPhotos];
+
+    // Looks for images/collections.json (a list of batch folder names), then
+    // fetches each folder's manifest.json and merges those photos in. Missing
+    // collections.json, a missing/malformed manifest, or no fetch() support
+    // at all are all treated as "no new batches yet" rather than an error —
+    // the legacy photos still render fine either way.
+    async function loadPhotos() {
+      if (typeof fetch !== 'function') return;
+      let folders;
+      try {
+        const res = await fetch('images/collections.json');
+        if (!res.ok) return;
+        folders = await res.json();
+      } catch (err) {
+        return; // no collections.json yet — nothing to add
+      }
+
+      for (const folder of folders) {
+        try {
+          const res = await fetch(`images/${folder}/manifest.json`);
+          if (!res.ok) {
+            console.warn(`No manifest.json found for images/${folder}`);
+            continue;
+          }
+          const entries = await res.json();
+          for (const entry of entries) {
+            photos.push({
+              title: entry.title,
+              meta: `${entry.category.charAt(0).toUpperCase()}${entry.category.slice(1)} · ${entry.year}`,
+              cat: entry.category,
+              src: `images/${folder}/${entry.file}`,
+            });
+          }
+        } catch (err) {
+          console.warn(`Failed to load images/${folder}/manifest.json`, err);
+        }
+      }
+    }
 
     function renderGallery(filter) {
       const grid = document.getElementById('gallery');
@@ -425,9 +470,13 @@
       if (evt.key === 'Escape') closePhotoModal();
     });
 
-    renderGallery('all');
-    renderFeatured();
-    renderRecognition();
+    // Exposed so the test suite can `await window.photosReady` before
+    // asserting on gallery/featured/recognition content.
+    const photosReady = loadPhotos().then(() => {
+      renderGallery('all');
+      renderFeatured();
+      renderRecognition();
+    });
   </script>
 </body>
 </html>
