@@ -170,6 +170,46 @@
     }
     .featured-pill:hover { background: var(--soft-blue); color: var(--white); }
 
+    /* WRITING */
+    .essay-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+    }
+    .essay-card {
+      cursor: pointer; padding: 28px; background: var(--white);
+      border: 1px solid rgba(38,89,129,0.15);
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .essay-card:hover { border-color: var(--soft-blue); transform: translateY(-2px); }
+    .essay-genre {
+      font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--soft-blue); margin-bottom: 10px;
+    }
+    .essay-card-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;
+      font-weight: 400; margin-bottom: 12px; color: var(--midnight);
+    }
+    .essay-excerpt { font-size: 0.9rem; line-height: 1.7; color: var(--light-blue); }
+
+    .essay-modal-content {
+      position: relative; background: var(--white);
+      padding: 40px; width: 100%; max-width: 720px; max-height: 88vh;
+      overflow-y: auto;
+    }
+    .essay-reader-title {
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 400; margin: 6px 0 24px; color: var(--midnight);
+    }
+    .essay-reader img { width: 100%; height: auto; display: block; margin-bottom: 24px; }
+    .essay-body p {
+      font-size: 1.02rem; line-height: 1.9; color: var(--light-blue);
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 768px) {
+      .essay-grid { grid-template-columns: 1fr; }
+      .essay-modal-content { padding: 28px; }
+    }
+
     /* PHOTO MODAL — mobile-first base, refined per breakpoint below */
     .modal-overlay {
       position: fixed; inset: 0; z-index: 200;
@@ -231,6 +271,7 @@
       <a class="nav-link" href="#work">Work</a>
       <a class="nav-link" href="#about">About</a>
       <a class="nav-link" href="#contact">Contact</a>
+      <a class="nav-link" href="#writing">Writing</a>
       <a class="nav-link" href="#featured">Featured</a>
     </div>
   </nav>
@@ -285,6 +326,18 @@
     </div>
   </section>
 
+  <!-- WRITING -->
+  <section id="writing">
+    <div class="section">
+      <div class="section-eyebrow">Writing</div>
+      <h2 class="section-title">Selected Essays</h2>
+
+      <div class="essay-grid" id="writing-grid">
+        <!-- Essays injected by JS -->
+      </div>
+    </div>
+  </section>
+
   <!-- CONTACT -->
   <section id="contact">
     <div class="contact-wrap">
@@ -313,6 +366,18 @@
       <button class="modal-close" onclick="closePhotoModal()" aria-label="Close">&times;</button>
       <img id="modal-img" src="" alt="" />
       <div class="modal-caption" id="modal-caption"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="essay-modal" onclick="closeEssayModal(event)">
+    <div class="essay-modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeEssayModal()" aria-label="Close">&times;</button>
+      <div class="essay-reader" id="essay-photo-wrap" style="display:none;">
+        <img id="essay-photo" src="" alt="" />
+      </div>
+      <div class="essay-genre" id="essay-genre"></div>
+      <h3 class="essay-reader-title" id="essay-title"></h3>
+      <div class="essay-body" id="essay-body"></div>
     </div>
   </div>
 
@@ -422,8 +487,68 @@
 
     // Let desktop/laptop users dismiss with Escape in addition to clicking out.
     document.addEventListener('keydown', (evt) => {
-      if (evt.key === 'Escape') closePhotoModal();
+      if (evt.key === 'Escape') {
+        closePhotoModal();
+        closeEssayModal();
+      }
     });
+
+    // --- Writing -----------------------------------------------------------
+    // Essays live entirely in writing/essays.json (title, genre, excerpt,
+    // body, and an optional photoTitle to pair the piece with a photo). No
+    // per-essay HTML files — adding a new essay is a single JSON edit.
+    let essays = [];
+
+    async function loadEssays() {
+      if (typeof fetch !== 'function') return;
+      try {
+        const res = await fetch('writing/essays.json');
+        if (!res.ok) return;
+        essays = await res.json();
+      } catch (err) {
+        // no essays.json yet — Writing section just renders empty
+      }
+    }
+
+    function renderWriting() {
+      const grid = document.getElementById('writing-grid');
+      if (!grid) return;
+      grid.innerHTML = essays.map((e, i) => `
+        <div class="essay-card" onclick="openEssay(${i})">
+          <div class="essay-genre">${e.genre}${e.date ? ' · ' + e.date : ''}</div>
+          <div class="essay-card-title">${e.title}</div>
+          <div class="essay-excerpt">${e.excerpt}</div>
+        </div>
+      `).join('');
+    }
+
+    function openEssay(index) {
+      const essay = essays[index];
+      if (!essay) return;
+
+      document.getElementById('essay-genre').textContent = `${essay.genre}${essay.date ? ' · ' + essay.date : ''}`;
+      document.getElementById('essay-title').textContent = essay.title;
+      document.getElementById('essay-body').innerHTML = essay.body.map(p => `<p>${p}</p>`).join('');
+
+      const photoWrap = document.getElementById('essay-photo-wrap');
+      const pairedPhoto = essay.photoTitle ? photos.find(p => p.title === essay.photoTitle) : null;
+      if (pairedPhoto) {
+        document.getElementById('essay-photo').src = pairedPhoto.src;
+        document.getElementById('essay-photo').alt = pairedPhoto.title;
+        photoWrap.style.display = 'block';
+      } else {
+        photoWrap.style.display = 'none';
+      }
+
+      document.getElementById('essay-modal').classList.add('active');
+    }
+
+    function closeEssayModal() {
+      document.getElementById('essay-modal').classList.remove('active');
+    }
+
+    // Exposed so the test suite can `await window.eval('essaysReady')`.
+    const essaysReady = loadEssays().then(renderWriting);
 
     renderGallery('all');
     renderFeatured();
